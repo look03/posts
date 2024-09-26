@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./src/server
+    ports:
+      - "127.0.0.1:3001:3001"
+    expose:
+      - 3000
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - ./src/server/app:/app
+      - ./src/server/app/node_modules:/node_modules
+    networks:
+      - docker_net
+  postgres:
+    build: ./containers/postgres
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./postgres/db_backups:/backups
+      - ./postgres/pg:/var/lib/postgresql/data
+    networks:
+      - docker_net
+  nginx:
+    build: ./containers/nginx
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - /etc/localtime:/etc/localtime/:ro
+      - ./logs/nginx/:/var/log/nginx
+      - ./src/front:/var/www/html
+    depends_on:
+      - server
+    command: nginx -g "daemon off;"
+    restart: always
+    networks:
+      - docker_net
+networks:
+  docker_net:
+volumes:
+  postgres:

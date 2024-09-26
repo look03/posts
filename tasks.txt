@@ -1,0 +1,39 @@
+npx sequelize-cli db:migrate
+4RzW0Q/=Mvch\nz
+
+
+
+modules/ в ней храняться все модули
+models/ в ней храняться модели
+
+почитать про DTO, про принцип 
+@Post()
+  create(@Param('postId') postId: number, @Body() createCommentDto: CreateCommentDto) {
+    return this.commentsService.create(postId, createCommentDto);
+  }
+
+  @Get()
+  findAll(@Param('postId') postId: number) {
+    return this.commentsService.findAll(postId);
+  }
+
+  @Get(':commentId')
+  findOne(@Param('postId') postId: number, @Param('commentId') commentId: number) {
+    return this.commentsService.findOne(postId, commentId);
+  }
+
+  @Put(':commentId')
+  update(@Param('postId') postId: number, @Param('commentId') commentId: number, @Body() updateCommentDto: UpdateCommentDto) {
+    return this.commentsService.update(postId, commentId, updateCommentDto);
+  }
+
+  @Delete(':commentId')
+  remove(@Param('postId') postId: number, @Param('commentId') commentId: number) {
+    return this.commentsService.remove(postId, commentId);
+  }
+  
+  
+  pipes - настроить валидацию
+  logs/server/errors
+  метод по пулучении ком за конкретное время 
+  настроить eslint prettier

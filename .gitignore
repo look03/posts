@@ -2,3 +2,4 @@ logs
 postgres
 node_modules
 .env
+.idea
